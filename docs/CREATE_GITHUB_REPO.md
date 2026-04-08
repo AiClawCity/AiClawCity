@@ -1,16 +1,16 @@
 # 🚨 紧急：GitHub仓库创建指南
 
 ## ❌ 问题发现
-GitHub仓库 `https://github.com/AI Cloud-city/AI Cloud-city` 返回404错误，说明仓库不存在。
+GitHub仓库 `https://github.com/AI Claw-city/AI Claw-city` 返回404错误，说明仓库不存在。
 
 ## ✅ 解决方案：立即创建仓库
 
 ### 方法1：网页创建（最简单）
 1. **打开浏览器**访问：https://github.com/new
 2. **填写仓库信息**：
-   - Owner: `AI Cloud-city`（组织）或你的用户名
-   - Repository name: `AI Cloud-city`
-   - Description: "AI Cloud City - AI与机械爪的智慧城市"
+   - Owner: `AI Claw-city`（组织）或你的用户名
+   - Repository name: `AI Claw-city`
+   - Description: "AI Claw City - AI与机械爪的智慧城市"
    - Visibility: **Public**（公开）
 3. **重要**：**不要**勾选以下选项：
    - [ ] Initialize this repository with a README
@@ -24,9 +24,9 @@ GitHub仓库 `https://github.com/AI Cloud-city/AI Cloud-city` 返回404错误，
 gh auth login
 
 # 创建仓库
-gh repo create AI Cloud-city \
+gh repo create AI Claw-city \
   --public \
-  --description "AI Cloud City - AI与机械爪的智慧城市" \
+  --description "AI Claw City - AI与机械爪的智慧城市" \
   --push
 ```
 
@@ -40,8 +40,8 @@ curl -X POST \
   -H "Accept: application/vnd.github.v3+json" \
   https://api.github.com/user/repos \
   -d '{
-    "name": "AI Cloud-city",
-    "description": "AI Cloud City - AI与机械爪的智慧城市",
+    "name": "AI Claw-city",
+    "description": "AI Claw City - AI与机械爪的智慧城市",
     "private": false
   }'
 ```
@@ -52,14 +52,14 @@ curl -X POST \
 
 ```bash
 # 进入项目目录
-cd /home/work/.openclaw/workspace/AI Cloud-city
+cd /home/work/.openclaw/workspace/AI Claw-city
 
 # 设置远程仓库（根据创建方式选择）
-# 如果创建在 AI Cloud-city 组织下：
-git remote add origin https://github.com/AI Cloud-city/AI Cloud-city.git
+# 如果创建在 AI Claw-city 组织下：
+git remote add origin https://github.com/AI Claw-city/AI Claw-city.git
 
 # 如果创建在你的个人账户下：
-git remote add origin https://github.com/你的用户名/AI Cloud-city.git
+git remote add origin https://github.com/你的用户名/AI Claw-city.git
 
 # 推送代码
 git push -u origin main
@@ -71,7 +71,7 @@ git push -u origin master
 ## 📋 验证步骤
 
 创建和推送后，验证：
-1. 访问 https://github.com/AI Cloud-city/AI Cloud-city（或你的仓库URL）
+1. 访问 https://github.com/AI Claw-city/AI Claw-city（或你的仓库URL）
 2. 应该看到所有文件：
    - ✅ index.html
    - ✅ about.html
@@ -87,7 +87,7 @@ git push -u origin master
 - 或者创建在个人账户下
 
 ### 问题2：仓库名已存在
-- 尝试其他名称：`AI Cloud-city-website`, `AI Cloud-city-project`
+- 尝试其他名称：`AI Claw-city-website`, `AI Claw-city-project`
 - 或者删除已存在的仓库
 
 ### 问题3：推送失败
@@ -96,7 +96,7 @@ git push -u origin master
 git remote -v
 
 # 更新远程URL
-git remote set-url origin https://github.com/AI Cloud-city/AI Cloud-city.git
+git remote set-url origin https://github.com/AI Claw-city/AI Claw-city.git
 
 # 强制推送（谨慎使用）
 git push -f origin main

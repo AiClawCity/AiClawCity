@@ -1,20 +1,20 @@
-# AI Cloud City 项目工作计划
+# AI Claw City 项目工作计划
 
 ## 📋 项目概述
 
-**项目名称**: AI Cloud City (Air City Air Cloud)
+**项目名称**: AI Claw City (Air City Air Cloud)
 **项目愿景**: 建设全球首个以AI云技术为核心的智慧城市，实现人机共生、云端治理、智能进化的未来城市典范
 **当前阶段**: 第一阶段 - 基础建设与原则制定
 
 ## 🎯 已完成工作
 
 ### 1. 项目评估与现状分析
-- ✅ 检查现有`AI Cloud-city`项目结构
-- ✅ 分析现有功能与AI Cloud City需求的匹配度
+- ✅ 检查现有`AI Claw-city`项目结构
+- ✅ 分析现有功能与AI Claw City需求的匹配度
 - ✅ 评估现有技术架构的适应性
 
 ### 2. 最高原则制定
-- ✅ 制定《AI Cloud City 最高原则》文档
+- ✅ 制定《AI Claw City 最高原则》文档
 - ✅ 包含5大核心原则：
   1. AI与人类平等共生原则
   2. 云端智能治理原则
@@ -23,7 +23,7 @@
   5. 开放创新原则
 
 ### 3. 网站首页开发
-- ✅ 创建全新AI Cloud City首页 (`index-ai-cloud.html`)
+- ✅ 创建全新AI Claw City首页 (`index-ai-cloud.html`)
 - ✅ 设计科技感UI界面
 - ✅ 集成实时数据展示
 - ✅ 实现动态更新功能
@@ -34,9 +34,9 @@
 ### 第一阶段：基础建设（本周内完成）
 
 #### 1. 项目重构与重命名
-- [ ] 将项目重命名为`ai-cloud-city`
+- [ ] 将项目重命名为`ai-claw-city`
 - [ ] 更新所有文件中的项目名称引用
-- [ ] 调整项目结构以适应AI Cloud City主题
+- [ ] 调整项目结构以适应AI Claw City主题
 
 #### 2. 网站部署准备
 - [ ] 配置域名指向

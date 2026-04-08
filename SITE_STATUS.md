@@ -29,7 +29,7 @@ Markdown文件: 17
 ```
 
 ## 修复的问题
-1. 修复了 index.html 和 index-ai-cloud.html 中的坏链接：AI_CLOUD_PRINCIPLES.md → docs/AI_CLOUD_PRINCIPLES.md
+1. 修复了 index.html 和 index-ai-cloud.html 中的坏链接：AI_CLAW_PRINCIPLES.md → docs/AI_CLAW_PRINCIPLES.md
 
 ## 建议的维护任务
 1. 检查所有外部链接是否有效
