@@ -21,15 +21,15 @@ Markdown文件: 17
 
 ## 最近修改
 ```
-2026-04-08 19:59:03.828804703 +0800 ./index-ai-cloud.html
+2026-04-08 19:59:03.828804703 +0800 ./index.html (原index-ai-cloud.html)
 2026-04-08 19:59:03.827804665 +0800 ./index.html
-2026-04-08 19:57:53.220138228 +0800 ./website-validation.html
-2026-04-08 19:57:53.220138228 +0800 ./test-site.html
-2026-04-08 19:57:53.219138190 +0800 ./preview.html
+2026-04-08 19:57:53.220138228 +0800 ./(已删除)
+2026-04-08 19:57:53.220138228 +0800 ./(已删除)
+2026-04-08 19:57:53.219138190 +0800 ./(已删除)
 ```
 
 ## 修复的问题
-1. 修复了 index.html 和 index-ai-cloud.html 中的坏链接：AI_CLAW_PRINCIPLES.md → docs/AI_CLAW_PRINCIPLES.md
+1. 修复了 index.html 和 index.html (原index-ai-cloud.html) 中的坏链接：AI_CLAW_PRINCIPLES.md → docs/AI_CLAW_PRINCIPLES.md
 
 ## 建议的维护任务
 1. 检查所有外部链接是否有效

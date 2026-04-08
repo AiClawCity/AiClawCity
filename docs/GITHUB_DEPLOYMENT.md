@@ -62,7 +62,7 @@ git push -u origin main
 - `about.html` - 关于我们页面（团队介绍、发展历程）
 - `claw-codex.html` - Claw法典页面（16条法律原则）
 - `admin.html` - 管理后台页面（城市管理界面）
-- `test-site.html` - 网站测试页面（功能验证）
+- `(已删除，功能集成到主站)` - 网站测试页面（功能验证）
 
 ### 资源文件
 - `css/style.css` - 主样式文件（科技感UI设计）
@@ -81,7 +81,7 @@ git push -u origin main
 ### 其他文件
 - `start.sh` - 启动脚本
 - `upgrade-script.js` - 自动升级脚本
-- `preview.html` - 预览页面
+- `(已删除)` - 预览页面
 - `logs/` - 日志目录
 
 ## 🔧 网站功能特性

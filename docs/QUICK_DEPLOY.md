@@ -86,7 +86,7 @@ git push -u origin master
 
 部署成功后，可以访问：
 - GitHub仓库: https://github.com/AI Claw-city/AI Claw-city
-- 网站测试: 打开 `test-site.html`
+- 网站测试: 打开 `(已删除，功能集成到主站)`
 - 部署报告: 查看 `DEPLOYMENT_REPORT.md`
 
 ## 📞 快速帮助

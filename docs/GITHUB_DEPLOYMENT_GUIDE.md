@@ -28,9 +28,9 @@
 ### 其他文件
 - `.gitignore` - Git 忽略文件
 - `config.json` - 配置文件
-- `preview.html` - 预览页面
-- `test-site.html` - 测试页面
-- `website-validation.html` - 网站验证页面
+- `(已删除)` - 预览页面
+- `(已删除，功能集成到主站)` - 测试页面
+- `(已删除)` - 网站验证页面
 
 ## 🚀 部署到 GitHub 的三种方法
 

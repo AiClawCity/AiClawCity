@@ -58,7 +58,7 @@
 ## 📋 具体任务清单
 
 ### ✅ 已完成
-1. 优化版首页 (`index-optimized.html`)
+1. 优化版首页 (`index.html`)
 2. 项目落地计划 (`AI Claw_PROJECT_PLAN.md`)
 
 ### 🔄 进行中

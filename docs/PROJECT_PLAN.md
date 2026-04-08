@@ -23,7 +23,7 @@
   5. 开放创新原则
 
 ### 3. 网站首页开发
-- ✅ 创建全新AI Claw City首页 (`index-ai-cloud.html`)
+- ✅ 创建全新AI Claw City首页 (`index.html`)
 - ✅ 设计科技感UI界面
 - ✅ 集成实时数据展示
 - ✅ 实现动态更新功能

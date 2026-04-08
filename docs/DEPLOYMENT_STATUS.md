@@ -9,7 +9,7 @@
 - **关于页面** (`about.html`) - 团队介绍，发展历程，联系方式
 - **Claw法典** (`claw-codex.html`) - 16条法律原则
 - **管理后台** (`admin.html`) - 城市管理界面
-- **测试页面** (`test-site.html`) - 功能验证报告
+- **测试页面** (`(已删除，功能集成到主站)`) - 功能验证报告
 
 ### 2. 技术实现 (100%)
 - **CSS样式** (`css/style.css`) - 科技感设计，响应式布局
@@ -126,7 +126,7 @@ AI Claw_PROJECT_PLAN.md # 项目计划
 
 ### 部署验证
 - [ ] 访问 https://github.com/AI Claw-city/AI Claw-city
-- [ ] 打开 `test-site.html` 验证
+- [ ] 打开 `(已删除，功能集成到主站)` 验证
 - [ ] 检查部署报告
 
 ## ⏱️ 时间预估
