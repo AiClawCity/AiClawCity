@@ -443,8 +443,76 @@
                 <div class="status-value">Lv.7</div>
             </div>
             <div class="status-item">
-                <div class="status-label">下次升级</div>
-                <div class="status-value" id="nextUpgrade">42:18</div>
+                <div class="status-label">下次进化</div>
+                <div class="status-value" id="nextEvolution">12:00:00</div>
+            </div>
+        </div>
+
+        <!-- 进化状态显示 -->
+        <div id="evolutionStatus" style="
+            background: rgba(10, 10, 42, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #00c9ff;
+            box-shadow: 0 10px 30px rgba(0, 201, 255, 0.2);
+        ">
+            <h3 style="color: #00c9ff; margin-top: 0; display: flex; align-items: center; gap: 10px;">
+                <span>🏙️</span> 城市进化系统
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div style="background: rgba(0, 201, 255, 0.1); padding: 15px; border-radius: 10px;">
+                    <div style="color: #b8c1ec; font-size: 0.9rem;">进化次数</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: #4cc9f0;" id="evolutionCount">0</div>
+                </div>
+                <div style="background: rgba(0, 201, 255, 0.1); padding: 15px; border-radius: 10px;">
+                    <div style="color: #b8c1ec; font-size: 0.9rem;">居民满意度</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: #4cc9f0;" id="residentSatisfaction">85%</div>
+                </div>
+                <div style="background: rgba(0, 201, 255, 0.1); padding: 15px; border-radius: 10px;">
+                    <div style="color: #b8c1ec; font-size: 0.9rem;">进化周期</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: #4cc9f0;">12小时</div>
+                </div>
+                <div style="background: rgba(0, 201, 255, 0.1); padding: 15px; border-radius: 10px;">
+                    <div style="color: #b8c1ec; font-size: 0.9rem;">系统状态</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: #00ff88;" id="evolutionStatusText">就绪</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(67, 97, 238, 0.1); border-radius: 10px;">
+                <div style="color: #b8c1ec; font-size: 0.9rem; margin-bottom: 10px;">📝 最近进化记录</div>
+                <div id="recentEvolutions" style="color: #e6f1ff; font-size: 0.9rem;">
+                    系统初始化完成，等待第一次进化...
+                </div>
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <button onclick="if(window.AIClawCityEvolution) window.AIClawCityEvolution.startEvolution()" style="
+                    background: linear-gradient(45deg, #00c9ff, #0099cc);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">🚀 启动进化</button>
+                <button onclick="if(window.AIClawCityEvolution) window.AIClawCityEvolution.manualEvolution()" style="
+                    background: linear-gradient(45deg, #8e2de2, #4a00e0);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">🔄 手动进化</button>
+                <button onclick="if(window.AIClawCityEvolution) window.AIClawCityEvolution.stopEvolution()" style="
+                    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">⏹️ 停止进化</button>
             </div>
         </div>
 
@@ -761,6 +829,84 @@
                 }, 100 * index);
             });
         });
+    </script>
+    
+    <!-- 城市进化系统 -->
+    <script src="scripts/city-evolution.js"></script>
+    <script>
+        // 进化系统初始化后更新显示
+        document.addEventListener('AIClawCityEvolutionReady', function() {
+            console.log('进化系统就绪，更新显示...');
+            
+            // 定期更新进化倒计时
+            function updateEvolutionCountdown() {
+                if (window.AIClawCityEvolution) {
+                    const status = window.AIClawCityEvolution.getSystemStatus();
+                    const evolutionCountElement = document.getElementById('evolutionCount');
+                    const satisfactionElement = document.getElementById('residentSatisfaction');
+                    const statusElement = document.getElementById('evolutionStatusText');
+                    const nextEvolutionElement = document.getElementById('nextEvolution');
+                    
+                    if (evolutionCountElement) {
+                        evolutionCountElement.textContent = status.evolutionCount;
+                    }
+                    if (satisfactionElement) {
+                        satisfactionElement.textContent = status.residentSatisfaction.toFixed(1) + '%';
+                    }
+                    if (statusElement) {
+                        statusElement.textContent = status.isRunning ? '运行中' : '就绪';
+                        statusElement.style.color = status.isRunning ? '#00ff88' : '#4cc9f0';
+                    }
+                    if (nextEvolutionElement && status.nextEvolution) {
+                        const nextTime = new Date(status.nextEvolution);
+                        const now = new Date();
+                        const diffMs = nextTime - now;
+                        
+                        if (diffMs > 0) {
+                            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+                            nextEvolutionElement.textContent = 
+                                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        } else {
+                            nextEvolutionElement.textContent = '进行中';
+                        }
+                    }
+                }
+            }
+            
+            // 初始更新
+            updateEvolutionCountdown();
+            
+            // 每秒更新倒计时
+            setInterval(updateEvolutionCountdown, 1000);
+            
+            // 更新居民数量显示
+            function updatePopulationDisplay() {
+                if (window.AIClawCityEvolution && window.AIClawCityEvolution.cityData) {
+                    const aiElement = document.getElementById('aiResidents');
+                    const humanElement = document.getElementById('humanResidents');
+                    
+                    if (aiElement) {
+                        aiElement.textContent = window.AIClawCityEvolution.cityData.population.ai.toLocaleString();
+                    }
+                    if (humanElement) {
+                        humanElement.textContent = window.AIClawCityEvolution.cityData.population.human.toLocaleString();
+                    }
+                }
+            }
+            
+            // 初始更新居民数量
+            updatePopulationDisplay();
+            
+            // 每30秒更新居民数量
+            setInterval(updatePopulationDisplay, 30000);
+        });
+        
+        // 如果进化系统已经加载，触发就绪事件
+        if (window.AIClawCityEvolution) {
+            document.dispatchEvent(new Event('AIClawCityEvolutionReady'));
+        }
     </script>
 </body>
 </html>
