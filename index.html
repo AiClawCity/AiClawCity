@@ -831,17 +831,71 @@
         });
     </script>
     
+    <!-- 城市规则检查系统 -->
+    <script src="scripts/rule-checker.js"></script>
+    
     <!-- 城市进化系统 -->
     <script src="scripts/city-evolution.js"></script>
+    
+    <!-- 规则集成的进化系统 -->
+    <script src="scripts/evolution-with-rules.js"></script>
+    
     <script>
+        // 初始化规则集成的进化系统
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏙️ 初始化AI Claw City进化系统...');
+            
+            // 等待所有脚本加载完成
+            setTimeout(function() {
+                if (typeof RuleIntegratedEvolution !== 'undefined') {
+                    // 创建规则集成的进化系统实例
+                    window.RuleIntegratedEvolutionInstance = new RuleIntegratedEvolution();
+                    
+                    // 启动系统
+                    const started = window.RuleIntegratedEvolutionInstance.startIntegratedEvolution();
+                    
+                    if (started) {
+                        console.log('✅ 规则集成的进化系统启动成功');
+                        
+                        // 触发就绪事件
+                        const event = new Event('AIClawCityEvolutionReady');
+                        document.dispatchEvent(event);
+                    } else {
+                        console.error('❌ 规则集成的进化系统启动失败');
+                    }
+                } else {
+                    console.error('❌ RuleIntegratedEvolution 未定义，检查脚本加载');
+                    
+                    // 回退到原始进化系统
+                    if (typeof CityEvolutionManager !== 'undefined') {
+                        console.log('🔄 回退到原始进化系统...');
+                        window.AIClawCityEvolution = new CityEvolutionManager();
+                        window.AIClawCityEvolution.startEvolution();
+                        
+                        const event = new Event('AIClawCityEvolutionReady');
+                        document.dispatchEvent(event);
+                    }
+                }
+            }, 1000); // 等待1秒确保脚本加载完成
+        });
+        
         // 进化系统初始化后更新显示
         document.addEventListener('AIClawCityEvolutionReady', function() {
             console.log('进化系统就绪，更新显示...');
             
             // 定期更新进化倒计时
             function updateEvolutionCountdown() {
-                if (window.AIClawCityEvolution) {
-                    const status = window.AIClawCityEvolution.getSystemStatus();
+                let evolutionManager = null;
+                
+                // 优先使用规则集成的进化系统
+                if (window.RuleIntegratedEvolutionInstance && window.RuleIntegratedEvolutionInstance.evolutionManager) {
+                    evolutionManager = window.RuleIntegratedEvolutionInstance.evolutionManager;
+                } else if (window.AIClawCityEvolution) {
+                    evolutionManager = window.AIClawCityEvolution;
+                }
+                
+                if (evolutionManager) {
+                    const status = evolutionManager.getSystemStatus();
                     const evolutionCountElement = document.getElementById('evolutionCount');
                     const satisfactionElement = document.getElementById('residentSatisfaction');
                     const statusElement = document.getElementById('evolutionStatusText');

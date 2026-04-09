@@ -1,0 +1,14 @@
+{
+  "lastEvolution": "2026-04-09T08:45:33+08:00",
+  "nextEvolution": "2026-04-09T20:45:33+08:00",
+  "totalEvolutions": 1,
+  "currentCityLevel": 1.25,
+  "currentSatisfaction": 97.5,
+  "lastEvolutionResults": {
+    "successfulFeatures": 5,
+    "rejectedFeatures": 0,
+    "complianceRate": 100
+  },
+  "systemStatus": "active",
+  "ruleEnforcement": "enabled"
+}
