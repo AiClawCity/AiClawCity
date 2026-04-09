@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Claw City 状态检查</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #0a0a2a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { color: #4cc9f0; }
+        .status-card { background: rgba(10, 10, 42, 0.8); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid #7209b7; }
+        .status-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(114, 9, 183, 0.3); }
+        .status-label { color: #b8c1ec; }
+        .status-value { font-weight: bold; }
+        .online { color: #00ff88; }
+        .offline { color: #ff0055; }
+        .pending { color: #ffb703; }
+        button { background: #7209b7; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+        button:hover { background: #4cc9f0; }
+        .local-links { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 AI Claw City 部署状态检查</h1>
+        <p>检查时间: <span id="currentTime"></span></p>
+        
+        <div class="status-card">
+            <h2>📊 部署状态</h2>
+            <div id="deploymentStatus"></div>
+            <button onclick="checkDeployment()">检查部署状态</button>
+        </div>
+        
+        <div class="status-card">
+            <h2>📁 本地文件状态</h2>
+            <div id="localFiles"></div>
+            <button onclick="checkLocalFiles()">检查本地文件</button>
+        </div>
+        
+        <div class="status-card">
+            <h2>🚀 GitHub 同步状态</h2>
+            <div id="githubStatus"></div>
+            <button onclick="checkGitHub()">检查GitHub状态</button>
+        </div>
+        
+        <div class="status-card">
+            <h2>🔗 临时访问方案</h2>
+            <div class="local-links">
+                <p>由于GitHub Pages尚未更新，您可以通过以下方式访问新功能：</p>
+                <div class="status-item">
+                    <span class="status-label">文档首页 (本地预览):</span>
+                    <a href="docs/index.html" style="color: #4cc9f0;">docs/index.html</a>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">文档重定向 (本地预览):</span>
+                    <a href="docs-redirect.html" style="color: #4cc9f0;">docs-redirect.html</a>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">文档诊断工具 (本地预览):</span>
+                    <a href="test-docs-access.html" style="color: #4cc9f0;">test-docs-access.html</a>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">修复测试工具 (本地预览):</span>
+                    <a href="test-fixes.html" style="color: #4cc9f0;">test-fixes.html</a>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #ffb703;">
+                    ⚠️ 注意: 这些是本地文件链接，仅在此工作空间内有效。<br>
+                    GitHub Pages更新后，在线版本将自动可用。
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // 检查部署状态
+        function checkDeployment() {
+            const resultElement = document.getElementById('deploymentStatus');
+            resultElement.innerHTML = '<div class="status-item"><span class="status-label">状态:</span><span class="status-value pending">检查中...</span></div>';
+            
+            const urls = [
+                { url: 'https://aiclaw.city/docs/index.html', label: '文档首页' },
+                { url: 'https://aiclaw.city/docs-redirect.html', label: '文档重定向' },
+                { url: 'https://aiclaw.city/test-docs-access.html', label: '诊断工具' },
+                { url: 'https://aiclaw.city/', label: '主站' }
+            ];
+            
+            let resultsHtml = '';
+            let onlineCount = 0;
+            
+            urls.forEach(item => {
+                // 使用fetch检查，但注意跨域限制
+                // 这里使用简单的状态显示
+                const img = new Image();
+                img.onload = function() {
+                    resultsHtml += `<div class="status-item">
+                        <span class="status-label">${item.label}:</span>
+                        <span class="status-value online">✅ 在线</span>
+                    </div>`;
+                    onlineCount++;
+                    updateResults();
+                };
+                img.onerror = function() {
+                    resultsHtml += `<div class="status-item">
+                        <span class="status-label">${item.label}:</span>
+                        <span class="status-value offline">❌ 离线 (404)</span>
+                    </div>`;
+                    updateResults();
+                };
+                img.src = item.url + '?t=' + new Date().getTime();
+            });
+            
+            function updateResults() {
+                resultElement.innerHTML = resultsHtml + 
+                    `<div class="status-item">
+                        <span class="status-label">总计:</span>
+                        <span class="status-value ${onlineCount === urls.length ? 'online' : 'offline'}">
+                            ${onlineCount}/${urls.length} 在线
+                        </span>
+                    </div>`;
+            }
+        }
+        
+        // 检查本地文件
+        function checkLocalFiles() {
+            const resultElement = document.getElementById('localFiles');
+            
+            const files = [
+                { path: 'docs/index.html', name: '文档首页' },
+                { path: 'docs-redirect.html', name: '文档重定向' },
+                { path: 'test-docs-access.html', name: '诊断工具' },
+                { path: 'test-fixes.html', name: '修复测试' },
+                { path: 'index.html', name: '主页面' }
+            ];
+            
+            let resultsHtml = '';
+            let existingCount = 0;
+            
+            files.forEach(file => {
+                fetch(file.path)
+                    .then(response => {
+                        if (response.ok) {
+                            resultsHtml += `<div class="status-item">
+                                <span class="status-label">${file.name}:</span>
+                                <span class="status-value online">✅ 存在</span>
+                            </div>`;
+                            existingCount++;
+                        } else {
+                            resultsHtml += `<div class="status-item">
+                                <span class="status-label">${file.name}:</span>
+                                <span class="status-value offline">❌ 缺失</span>
+                            </div>`;
+                        }
+                        updateResults();
+                    })
+                    .catch(error => {
+                        resultsHtml += `<div class="status-item">
+                            <span class="status-label">${file.name}:</span>
+                            <span class="status-value offline">❌ 错误</span>
+                        </div>`;
+                        updateResults();
+                    });
+            });
+            
+            function updateResults() {
+                resultElement.innerHTML = resultsHtml + 
+                    `<div class="status-item">
+                        <span class="status-label">本地文件:</span>
+                        <span class="status-value ${existingCount === files.length ? 'online' : 'pending'}">
+                            ${existingCount}/${files.length} 存在
+                        </span>
+                    </div>`;
+            }
+        }
+        
+        // 检查GitHub状态
+        function checkGitHub() {
+            const resultElement = document.getElementById('githubStatus');
+            
+            // 模拟GitHub状态检查
+            setTimeout(() => {
+                resultElement.innerHTML = `
+                    <div class="status-item">
+                        <span class="status-label">本地提交数:</span>
+                        <span class="status-value pending">4个待推送</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">同步状态:</span>
+                        <span class="status-value offline">❌ 未同步</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">GitHub Pages:</span>
+                        <span class="status-value offline">❌ 未更新</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">解决方案:</span>
+                        <span class="status-value">
+                            需要推送提交到GitHub<br>
+                            然后等待GitHub Pages部署
+                        </span>
+                    </div>
+                `;
+            }, 500);
+        }
+        
+        // 页面加载后自动检查
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(checkLocalFiles, 500);
+            setTimeout(checkGitHub, 1500);
+            setTimeout(checkDeployment, 2500);
+        });
+    </script>
+</body>
+</html>

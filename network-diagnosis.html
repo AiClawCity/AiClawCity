@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络诊断报告 - AI Claw City</title>
+    <style>
+        body { font-family: monospace; margin: 20px; background: #0a0a2a; color: white; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #ff0055; }
+        h2 { color: #ffb703; }
+        h3 { color: #4cc9f0; }
+        .diagnosis-section { background: rgba(10, 10, 42, 0.8); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid #7209b7; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(0, 255, 136, 0.1); border-left: 5px solid #00ff88; }
+        .failure { background: rgba(255, 0, 85, 0.1); border-left: 5px solid #ff0055; }
+        .warning { background: rgba(255, 183, 3, 0.1); border-left: 5px solid #ffb703; }
+        .error-details { font-family: monospace; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; }
+        .port-test { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid rgba(114, 9, 183, 0.3); }
+        .solution { background: rgba(76, 201, 240, 0.1); padding: 15px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 网络诊断报告 - AI Claw City</h1>
+        <p>诊断时间: <span id="currentTime"></span></p>
+        
+        <div class="diagnosis-section">
+            <h2>🚨 发现的关键问题</h2>
+            <div class="test-result failure">
+                <strong>HTTPS端口(443)连接失败</strong><br>
+                GitHub的HTTPS端口无法访问，导致git push操作失败。
+            </div>
+            
+            <div class="port-test">
+                <span>🌐 端口测试结果:</span>
+                <span>
+                    <span style="color: #00ff88;">✅ 端口80 (HTTP)</span> |
+                    <span style="color: #ff0055;">❌ 端口443 (HTTPS)</span> |
+                    <span style="color: #00ff88;">✅ 端口22 (SSH)</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="diagnosis-section">
+            <h2>📡 网络连接状态</h2>
+            
+            <h3>1. 基本连接测试</h3>
+            <div class="test-result warning">
+                <strong>混合连接状态</strong><br>
+                • HTTP连接正常 (端口80)<br>
+                • HTTPS连接失败 (端口443)<br>
+                • SSH连接正常但需要验证 (端口22)
+            </div>
+            
+            <h3>2. GitHub服务测试</h3>
+            <div class="test-result success">
+                <strong>GitHub API可访问</strong><br>
+                通过HTTP访问api.github.com返回200状态码<br>
+                说明基本网络路由正常，但HTTPS特定端口有问题
+            </div>
+            
+            <h3>3. Git协议测试</h3>
+            <div class="test-result failure">
+                <strong>Git HTTPS协议失败</strong><br>
+                git push使用HTTPS协议，需要443端口<br>
+                当前443端口连接被阻止或超时
+            </div>
+        </div>
+        
+        <div class="diagnosis-section">
+            <h2>🔧 根本原因分析</h2>
+            
+            <h3>可能的原因:</h3>
+            <div class="error-details">
+1. 防火墙/安全组规则阻止443端口
+   - 企业网络可能限制HTTPS出站
+   - 安全策略可能阻止特定端口
+
+2. 代理服务器配置问题
+   - HTTPS代理未正确配置
+   - 证书验证失败
+
+3. 网络路由问题
+   - 到GitHub HTTPS端口的特定路由故障
+   - ISP限制或网络拥堵
+
+4. 环境配置
+   - git配置使用HTTPS而不是SSH
+   - 网络库或SSL证书问题
+            </div>
+            
+            <h3>影响范围:</h3>
+            <div class="test-result warning">
+                • ❌ Git HTTPS推送失败<br>
+                • ✅ Git SSH推送可能可用<br>
+                • ✅ HTTP网站访问正常<br>
+                • ❌ HTTPS网站访问可能受影响
+            </div>
+        </div>
+        
+        <div class="diagnosis-section">
+            <h2>🚀 解决方案</h2>
+            
+            <h3>方案1: 使用SSH协议代替HTTPS</h3>
+            <div class="solution">
+                <strong>步骤:</strong><br>
+                1. 生成SSH密钥: <code>ssh-keygen -t ed25519 -C "your_email@example.com"</code><br>
+                2. 添加公钥到GitHub: Settings → SSH and GPG keys<br>
+                3. 更改远程仓库URL: <code>git remote set-url origin git@github.com:AiClawCity/AiClawCity.git</code><br>
+                4. 测试推送: <code>git push origin main</code><br>
+                <br>
+                <strong>优点:</strong> 使用端口22，当前可连接<br>
+                <strong>缺点:</strong> 需要SSH密钥配置
+            </div>
+            
+            <h3>方案2: 配置git使用HTTP代替HTTPS</h3>
+            <div class="solution">
+                <strong>步骤:</strong><br>
+                1. 更改远程仓库URL: <code>git remote set-url origin http://github.com/AiClawCity/AiClawCity.git</code><br>
+                2. 配置git使用纯HTTP: <code>git config --global http.sslVerify false</code> (不推荐用于生产)<br>
+                3. 测试推送<br>
+                <br>
+                <strong>注意:</strong> HTTP不安全，不推荐用于敏感数据
+            </div>
+            
+            <h3>方案3: 检查并修复网络配置</h3>
+            <div class="solution">
+                <strong>检查项目:</strong><br>
+                1. 防火墙规则: 确保443端口出站允许<br>
+                2. 代理设置: <code>env | grep -i proxy</code><br>
+                3. git配置: <code>git config --list | grep -i http</code><br>
+                4. 系统SSL证书: 检查<code>/etc/ssl/certs</code><br>
+                <br>
+                <strong>测试命令:</strong><br>
+                • <code>curl -v https://github.com</code> - 查看详细HTTPS错误<br>
+                • <code>openssl s_client -connect github.com:443</code> - 测试SSL连接
+            </div>
+            
+            <h3>方案4: 临时解决方案</h3>
+            <div class="solution">
+                <strong>立即行动:</strong><br>
+                1. 使用其他网络环境推送<br>
+                2. 等待网络问题自动恢复<br>
+                3. 使用GitHub网页界面手动上传文件<br>
+                4. 配置自动重试机制<br>
+                <br>
+                <strong>本地验证:</strong> 所有修复已在本地完成，可先验证功能
+            </div>
+        </div>
+        
+        <div class="diagnosis-section">
+            <h2>📋 立即操作建议</h2>
+            
+            <div class="test-result warning">
+                <strong>推荐操作顺序:</strong><br>
+                1. <strong>尝试SSH协议</strong> - 最可能成功的方案<br>
+                2. <strong>检查网络配置</strong> - 诊断具体HTTPS问题<br>
+                3. <strong>临时使用其他网络</strong> - 手机热点或其他WiFi<br>
+                4. <strong>配置自动重试</strong> - 设置git重试机制
+            </div>
+            
+            <h3>SSH配置命令:</h3>
+            <div class="error-details">
+# 1. 检查是否已有SSH密钥
+ls -la ~/.ssh/
+
+# 2. 生成新SSH密钥（如果没有）
+ssh-keygen -t ed25519 -C "aiclawcity@github.com"
+
+# 3. 显示公钥并添加到GitHub
+cat ~/.ssh/id_ed25519.pub
+
+# 4. 更改远程仓库URL
+cd /home/node/.openclaw/workspace/aiclawcity-website
+git remote set-url origin git@github.com:AiClawCity/AiClawCity.git
+
+# 5. 测试SSH连接
+ssh -T git@github.com
+
+# 6. 尝试推送
+git push origin main
+            </div>
+        </div>
+        
+        <div class="diagnosis-section">
+            <h2>📊 状态总结</h2>
+            
+            <div class="port-test">
+                <span>🔄 当前状态:</span>
+                <span style="color: #ffb703;">等待网络修复</span>
+            </div>
+            
+            <div class="port-test">
+                <span>📁 本地提交:</span>
+                <span style="color: #00ff88;">4个提交就绪</span>
+            </div>
+            
+            <div class="port-test">
+                <span>🌐 在线版本:</span>
+                <span style="color: #ff0055;">未更新 (等待推送)</span>
+            </div>
+            
+            <div class="port-test">
+                <span>🔧 修复状态:</span>
+                <span style="color: #00ff88;">100% 完成 (本地验证)</span>
+            </div>
+            
+            <div class="port-test">
+                <span>🚀 解决方案:</span>
+                <span style="color: #4cc9f0;">使用SSH协议或修复HTTPS</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>

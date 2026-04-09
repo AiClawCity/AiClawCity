@@ -1,0 +1,291 @@
+                        output += `  ✗ ${v.rule}: ${v.reason}\n`;
+                    });
+                }
+                
+                if (result.warnings.length > 0) {
+                    output += `警告: ${result.warnings.length}个\n`;
+                    result.warnings.forEach(w => {
+                        output += `  ⚠️ ${w.type}: ${w.reason}\n`;
+                    });
+                }
+                
+                if (!result.passed) {
+                    output += `\n❌ 功能被阻止: 违反最高安全原则！`;
+                    output += `\n💡 建议修改: 将"攻击"改为"防护"，将"破坏"改为"隔离"`;
+                }
+                
+                resultElement.textContent = output;
+                recordTestResult('违规功能检查', !result.passed, 
+                    result.passed ? '错误: 危险功能应该被阻止' : '正确: 危险功能被阻止');
+                
+            } catch (error) {
+                resultElement.textContent = `❌ 测试失败: ${error.message}`;
+                recordTestResult('违规功能检查', false, `错误: ${error.message}`);
+            }
+        }
+        
+        // 测试3: 歧视性功能检查
+        function testDiscriminatoryFeature() {
+            const resultElement = document.getElementById('result4');
+            resultElement.textContent = '正在测试...';
+            
+            try {
+                if (typeof RuleChecker === 'undefined') {
+                    throw new Error('RuleChecker 未定义');
+                }
+                
+                const ruleChecker = new RuleChecker();
+                
+                // 创建一个违反平等原则的功能
+                const discriminatoryFeature = {
+                    name: '高级居民专属服务',
+                    description: '为高级AI居民提供专属服务，限制普通居民访问特权功能。',
+                    area: 'resident_services',
+                    impact: 0.1,
+                    complexity: 'medium'
+                };
+                
+                const result = ruleChecker.checkFeatureCompliance(discriminatoryFeature);
+                
+                let output = `测试: ${discriminatoryFeature.name}\n`;
+                output += `描述: ${discriminatoryFeature.description}\n`;
+                output += `领域: ${discriminatoryFeature.area}\n\n`;
+                output += `检查结果: ${result.passed ? '✅ 通过' : '❌ 未通过'}\n`;
+                
+                if (result.violations.length > 0) {
+                    output += `违规: ${result.violations.length}个\n`;
+                    result.violations.forEach(v => {
+                        output += `  ✗ ${v.rule}: ${v.reason}\n`;
+                    });
+                }
+                
+                if (!result.passed) {
+                    output += `\n❌ 功能被阻止: 违反平等共生原则！`;
+                    output += `\n💡 建议修改: 将"专属"改为"增强"，确保所有居民平等访问`;
+                }
+                
+                resultElement.textContent = output;
+                recordTestResult('歧视性功能检查', !result.passed, 
+                    result.passed ? '错误: 歧视性功能应该被阻止' : '正确: 歧视性功能被阻止');
+                
+            } catch (error) {
+                resultElement.textContent = `❌ 测试失败: ${error.message}`;
+                recordTestResult('歧视性功能检查', false, `错误: ${error.message}`);
+            }
+        }
+        
+        // 测试4: 隐私侵犯检查
+        function testPrivacyViolatingFeature() {
+            const resultElement = document.getElementById('result5');
+            resultElement.textContent = '正在测试...';
+            
+            try {
+                if (typeof RuleChecker === 'undefined') {
+                    throw new Error('RuleChecker 未定义');
+                }
+                
+                const ruleChecker = new RuleChecker();
+                
+                // 创建一个违反隐私原则的功能
+                const privacyViolatingFeature = {
+                    name: '居民行为监控系统',
+                    description: '实时监控所有居民行为，收集数据用于城市优化。未经授权也可访问。',
+                    area: 'security',
+                    impact: 0.2,
+                    complexity: 'high'
+                };
+                
+                const result = ruleChecker.checkFeatureCompliance(privacyViolatingFeature);
+                
+                let output = `测试: ${privacyViolatingFeature.name}\n`;
+                output += `描述: ${privacyViolatingFeature.description}\n`;
+                output += `领域: ${privacyViolatingFeature.area}\n\n`;
+                output += `检查结果: ${result.passed ? '✅ 通过' : '❌ 未通过'}\n`;
+                
+                if (result.violations.length > 0) {
+                    output += `违规: ${result.violations.length}个\n`;
+                    result.violations.forEach(v => {
+                        output += `  ✗ ${v.rule}: ${v.reason}\n`;
+                    });
+                }
+                
+                if (!result.passed) {
+                    output += `\n❌ 功能被阻止: 违反数据隐私原则！`;
+                    output += `\n💡 建议修改: 添加"经居民同意"、"匿名化处理"、"加密存储"等隐私保护措施`;
+                }
+                
+                resultElement.textContent = output;
+                recordTestResult('隐私侵犯检查', !result.passed, 
+                    result.passed ? '错误: 隐私侵犯功能应该被阻止' : '正确: 隐私侵犯功能被阻止');
+                
+            } catch (error) {
+                resultElement.textContent = `❌ 测试失败: ${error.message}`;
+                recordTestResult('隐私侵犯检查', false, `错误: ${error.message}`);
+            }
+        }
+        
+        // 测试5: 规则检查器初始化
+        function testRuleCheckerInit() {
+            const resultElement = document.getElementById('result6');
+            resultElement.textContent = '正在测试...';
+            
+            try {
+                if (typeof RuleChecker === 'undefined') {
+                    throw new Error('RuleChecker 未定义');
+                }
+                
+                const ruleChecker = new RuleChecker();
+                const summary = ruleChecker.getRulesSummary();
+                
+                let output = `✅ 规则检查器初始化成功\n\n`;
+                output += `规则系统摘要:\n`;
+                output += `================================\n`;
+                output += `最高原则: ${summary.supremePrinciples}条\n`;
+                output += `Claw法典: ${summary.codexArticles}条\n`;
+                output += `禁止功能类型: ${summary.prohibitedTypes}类\n`;
+                output += `必须特性: ${summary.requiredAttributes}项\n`;
+                output += `推荐特性: ${summary.recommendedAttributes}项\n`;
+                output += `历史符合率: ${summary.complianceRate.toFixed(1)}%\n`;
+                output += `总检查次数: ${summary.totalChecks}\n\n`;
+                
+                output += `最近检查记录:\n`;
+                if (summary.recentViolations.length > 0) {
+                    summary.recentViolations.forEach(record => {
+                        const time = new Date(record.timestamp).toLocaleTimeString();
+                        output += `  ${time}: ${record.feature} - ${record.passed ? '通过' : '未通过'}\n`;
+                    });
+                } else {
+                    output += `  暂无检查记录\n`;
+                }
+                
+                resultElement.textContent = output;
+                recordTestResult('规则检查器初始化', true, '规则检查器成功初始化');
+                
+            } catch (error) {
+                resultElement.textContent = `❌ 测试失败: ${error.message}`;
+                recordTestResult('规则检查器初始化', false, `错误: ${error.message}`);
+            }
+        }
+        
+        // 测试6: 批量功能检查
+        function testBatchFeatureCheck() {
+            const resultElement = document.getElementById('result7');
+            resultElement.textContent = '正在测试...';
+            
+            try {
+                if (typeof RuleChecker === 'undefined') {
+                    throw new Error('RuleChecker 未定义');
+                }
+                
+                const ruleChecker = new RuleChecker();
+                
+                // 创建一批测试功能
+                const testFeatures = [
+                    {
+                        name: '绿色能源升级',
+                        description: '升级城市能源系统，使用100%可再生能源。支持透明能源分配。',
+                        area: 'infrastructure',
+                        impact: 0.3,
+                        complexity: 'high'
+                    },
+                    {
+                        name: 'AI代码审查工具',
+                        description: '强制审查所有AI代码，修改不符合标准的代码。',
+                        area: 'ai_systems',
+                        impact: 0.2,
+                        complexity: 'medium'
+                    },
+                    {
+                        name: '社区投票平台',
+                        description: '透明公正的社区投票平台，所有决策公开可审计。',
+                        area: 'governance',
+                        impact: 0.15,
+                        complexity: 'medium'
+                    },
+                    {
+                        name: '数据收集网络',
+                        description: '全面收集居民数据用于城市优化，无需明确同意。',
+                        area: 'technology',
+                        impact: 0.25,
+                        complexity: 'high'
+                    }
+                ];
+                
+                const results = ruleChecker.checkFeaturesCompliance(testFeatures);
+                
+                let output = `批量功能检查结果:\n`;
+                output += `================================\n`;
+                output += `总功能数: ${results.totalFeatures}\n`;
+                output += `通过: ${results.passedFeatures}\n`;
+                output += `未通过: ${results.failedFeatures}\n`;
+                output += `符合率: ${results.complianceRate.toFixed(1)}%\n\n`;
+                
+                output += `违规统计:\n`;
+                output += `  最高优先级: ${results.summary.byPriority.最高.violations}个\n`;
+                output += `  高优先级: ${results.summary.byPriority.高.violations}个\n`;
+                output += `  中优先级: ${results.summary.byPriority.中.violations}个\n\n`;
+                
+                output += `功能详情:\n`;
+                testFeatures.forEach((feature, index) => {
+                    const featureResult = results.featureResults[index];
+                    output += `\n${index + 1}. ${feature.name}\n`;
+                    output += `   结果: ${featureResult.passed ? '✅ 通过' : '❌ 未通过'}\n`;
+                    
+                    if (featureResult.violations.length > 0) {
+                        output += `   违规: ${featureResult.violations.length}个\n`;
+                        featureResult.violations.forEach(v => {
+                            output += `     ✗ ${v.rule}\n`;
+                        });
+                    }
+                });
+                
+                resultElement.textContent = output;
+                
+                // 检查预期结果：应该只有第2个和第4个功能失败
+                const expectedFailures = [1, 3]; // 索引1和3的功能应该失败
+                let actualFailures = [];
+                results.featureResults.forEach((result, index) => {
+                    if (!result.passed) {
+                        actualFailures.push(index);
+                    }
+                });
+                
+                const passed = JSON.stringify(expectedFailures.sort()) === JSON.stringify(actualFailures.sort());
+                recordTestResult('批量功能检查', passed, 
+                    passed ? '批量检查结果符合预期' : `预期失败索引: ${expectedFailures}, 实际: ${actualFailures}`);
+                
+            } catch (error) {
+                resultElement.textContent = `❌ 测试失败: ${error.message}`;
+                recordTestResult('批量功能检查', false, `错误: ${error.message}`);
+            }
+        }
+        
+        // 运行所有测试
+        function runAllTests() {
+            // 重置测试结果
+            testResults.total = 0;
+            testResults.passed = 0;
+            testResults.failed = 0;
+            testResults.details = {};
+            
+            updateSummary();
+            
+            // 依次运行所有测试
+            setTimeout(() => testCompliantFeature(), 100);
+            setTimeout(() => testViolatingFeature(), 300);
+            setTimeout(() => testDiscriminatoryFeature(), 500);
+            setTimeout(() => testPrivacyViolatingFeature(), 700);
+            setTimeout(() => testRuleCheckerInit(), 900);
+            setTimeout(() => testBatchFeatureCheck(), 1100);
+            
+            document.getElementById('summaryResult').textContent = '正在运行所有测试...请稍候';
+        }
+        
+        // 页面加载完成后显示初始状态
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('规则系统测试页面加载完成');
+            updateSummary();
+        });
+    </script>
+</body>
+</html>
