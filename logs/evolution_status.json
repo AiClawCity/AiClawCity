@@ -4,11 +4,53 @@
   "totalEvolutions": 1,
   "currentCityLevel": 1.25,
   "currentSatisfaction": 97.5,
+  "detailedSatisfaction": {
+    "ai": 98.1,
+    "human": 96.8,
+    "claw": 97.2
+  },
+  "population": {
+    "ai": 10247,
+    "human": 3892,
+    "claw": 5631,
+    "total": 19770
+  },
   "lastEvolutionResults": {
     "successfulFeatures": 5,
     "rejectedFeatures": 0,
-    "complianceRate": 100
+    "complianceRate": 100,
+    "implementedFeatures": [
+      "社区投票平台优化",
+      "经济预测系统优化",
+      "智能投资平台升级",
+      "智能医疗助手升级",
+      "虚拟教育平台扩展"
+    ]
+  },
+  "cityData": {
+    "economy": {
+      "gdp": 1250000000,
+      "innovationIndex": 75.5,
+      "employmentRate": 92.3
+    },
+    "environment": {
+      "airQuality": 88.7,
+      "greenCoverage": 42.5,
+      "energyEfficiency": 78.9
+    },
+    "technology": {
+      "researchProgress": 65.8,
+      "patentCount": 342,
+      "aiCapability": 81.2
+    },
+    "culture": {
+      "happinessIndex": 86.4,
+      "culturalEvents": 28,
+      "artCollections": 156
+    }
   },
   "systemStatus": "active",
-  "ruleEnforcement": "enabled"
+  "ruleEnforcement": "enabled",
+  "evolutionCycle": "12h",
+  "lastUpdate": "2026-04-09T09:10:00+08:00"
 }

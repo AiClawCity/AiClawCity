@@ -607,12 +607,16 @@
                 <h3 class="card-title" style="font-size: 1.4rem; margin-top: 30px;">居民满意度</h3>
                 <div class="city-stats">
                     <div class="stat-item">
-                        <div class="stat-value">96.7%</div>
+                        <div class="stat-value">98.1%</div>
                         <div class="stat-label">AI居民满意度</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">94.2%</div>
+                        <div class="stat-value">96.8%</div>
                         <div class="stat-label">人类居民满意度</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">97.5%</div>
+                        <div class="stat-label">总体满意度</div>
                     </div>
                 </div>
                 
@@ -625,6 +629,22 @@
                     <div class="stat-item">
                         <div class="stat-value">100%</div>
                         <div class="stat-label">资源循环率</div>
+                    </div>
+                </div>
+                
+                <h3 class="card-title" style="font-size: 1.4rem; margin-top: 30px;">人口统计</h3>
+                <div class="city-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">10,247</div>
+                        <div class="stat-label">AI居民</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3,892</div>
+                        <div class="stat-label">人类居民</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5,631</div>
+                        <div class="stat-label">机械爪</div>
                     </div>
                 </div>
             </div>
@@ -894,6 +914,95 @@
             }, 1000); // 等待1秒确保脚本加载完成
         });
         
+        // 更新实时数据中的分类满意度和人口数据
+        function updateRealTimeSatisfaction(data) {
+            console.log('更新实时数据...');
+            
+            // 查找居民满意度部分
+            const satisfactionSections = document.querySelectorAll('.card-title');
+            let satisfactionSectionIndex = -1;
+            
+            satisfactionSections.forEach((section, index) => {
+                if (section.textContent.includes('居民满意度')) {
+                    satisfactionSectionIndex = index;
+                }
+            });
+            
+            if (satisfactionSectionIndex !== -1) {
+                // 找到满意度部分后的第一个.city-stats
+                const satisfactionStats = satisfactionSections[satisfactionSectionIndex].nextElementSibling;
+                if (satisfactionStats && satisfactionStats.classList.contains('city-stats')) {
+                    const statItems = satisfactionStats.querySelectorAll('.stat-item');
+                    
+                    // 更新AI居民满意度
+                    if (statItems[0] && data.detailedSatisfaction?.ai) {
+                        const aiValue = statItems[0].querySelector('.stat-value');
+                        if (aiValue) {
+                            aiValue.textContent = data.detailedSatisfaction.ai.toFixed(1) + '%';
+                        }
+                    }
+                    
+                    // 更新人类居民满意度
+                    if (statItems[1] && data.detailedSatisfaction?.human) {
+                        const humanValue = statItems[1].querySelector('.stat-value');
+                        if (humanValue) {
+                            humanValue.textContent = data.detailedSatisfaction.human.toFixed(1) + '%';
+                        }
+                    }
+                    
+                    // 更新总体满意度
+                    if (statItems[2] && data.currentSatisfaction) {
+                        const overallValue = statItems[2].querySelector('.stat-value');
+                        if (overallValue) {
+                            overallValue.textContent = data.currentSatisfaction.toFixed(1) + '%';
+                        }
+                    }
+                }
+            }
+            
+            // 查找人口统计部分
+            let populationSectionIndex = -1;
+            satisfactionSections.forEach((section, index) => {
+                if (section.textContent.includes('人口统计')) {
+                    populationSectionIndex = index;
+                }
+            });
+            
+            if (populationSectionIndex !== -1 && data.population) {
+                // 找到人口统计部分后的第一个.city-stats
+                const populationStats = satisfactionSections[populationSectionIndex].nextElementSibling;
+                if (populationStats && populationStats.classList.contains('city-stats')) {
+                    const statItems = populationStats.querySelectorAll('.stat-item');
+                    
+                    // 更新AI居民数量
+                    if (statItems[0] && data.population.ai) {
+                        const aiValue = statItems[0].querySelector('.stat-value');
+                        if (aiValue) {
+                            aiValue.textContent = data.population.ai.toLocaleString();
+                        }
+                    }
+                    
+                    // 更新人类居民数量
+                    if (statItems[1] && data.population.human) {
+                        const humanValue = statItems[1].querySelector('.stat-value');
+                        if (humanValue) {
+                            humanValue.textContent = data.population.human.toLocaleString();
+                        }
+                    }
+                    
+                    // 更新机械爪数量
+                    if (statItems[2] && data.population.claw) {
+                        const clawValue = statItems[2].querySelector('.stat-value');
+                        if (clawValue) {
+                            clawValue.textContent = data.population.claw.toLocaleString();
+                        }
+                    }
+                }
+            }
+            
+            console.log('实时数据更新完成');
+        }
+        
         // 立即更新进化状态显示
         function updateEvolutionDisplay() {
             console.log('更新进化状态显示...');
@@ -941,6 +1050,9 @@
                         `;
                     }
                     
+                    // 更新实时数据中的分类满意度
+                    updateRealTimeSatisfaction(data);
+                    
                     console.log('进化状态显示更新完成');
                 })
                 .catch(error => {
@@ -951,6 +1063,12 @@
                     
                     const satisfactionElement = document.getElementById('residentSatisfaction');
                     if (satisfactionElement) satisfactionElement.textContent = '97.5%';
+                    
+                    // 使用默认的分类满意度数据
+                    updateRealTimeSatisfaction({
+                        detailedSatisfaction: { ai: 98.1, human: 96.8, claw: 97.2 },
+                        population: { ai: 10247, human: 3892, claw: 5631, total: 19770 }
+                    });
                     
                     const recentEvolutionsElement = document.getElementById('recentEvolutions');
                     if (recentEvolutionsElement) {
