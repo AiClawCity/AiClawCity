@@ -20,9 +20,9 @@ logs/rule-checks/
 reports/
 
 # 测试文件
-test-*.html
 verify-*.sh
 verify-*.html
+# 注意: test-fixes.html 是重要的修复测试工具，需要保留
 
 # 脚本备份
 scripts/*.backup*

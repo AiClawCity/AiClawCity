@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Claw City 技术文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .doc-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .doc-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .doc-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .doc-card p {
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .doc-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #a0aec0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+        
+        .doc-category {
+            background: #edf2f7;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .back-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: #4a5568;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .back-home a:hover {
+            background: #f7fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: white;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 AI Claw City 技术文档</h1>
+            <p>自我进化的AI共生城市 - 完整的技术文档和项目指南</p>
+        </div>
+        
+        <div class="docs-grid">
+            <a href="AI_CLAW_PRINCIPLES.md" class="doc-card">
+                <span class="doc-icon">⚖️</span>
+                <h3>AI Claw 原则</h3>
+                <p>城市的最高原则和伦理准则，指导所有AI与人类共生关系的基础规范。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">原则</span>
+                    <span>更新: 2026-04-09</span>
+                </div>
+            </a>
+            
+            <a href="CITY_EVOLUTION_GUIDE.md" class="doc-card">
+                <span class="doc-icon">🚀</span>
+                <h3>城市进化指南</h3>
+                <p>12小时自动进化系统的完整说明，包括功能库、规则检查和进化流程。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">系统</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="README.md" class="doc-card">
+                <span class="doc-icon">📖</span>
+                <h3>项目概述</h3>
+                <p>AI Claw City 项目简介、愿景、技术架构和核心功能概述。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">介绍</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="DEPLOYMENT_PLAN.md" class="doc-card">
+                <span class="doc-icon">🚀</span>
+                <h3>部署计划</h3>
+                <p>完整的项目部署指南，包括服务器配置、域名设置和持续集成。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">部署</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="GITHUB_DEPLOYMENT.md" class="doc-card">
+                <span class="doc-icon">🐙</span>
+                <h3>GitHub 部署</h3>
+                <p>使用GitHub进行版本控制和自动化部署的完整工作流程。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">开发</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="PROJECT_PLAN.md" class="doc-card">
+                <span class="doc-icon">📋</span>
+                <h3>项目计划</h3>
+                <p>详细的项目开发路线图、里程碑和功能规划时间表。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">规划</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="AICLAW_PROJECT_PLAN.md" class="doc-card">
+                <span class="doc-icon">🎯</span>
+                <h3>AI Claw 项目计划</h3>
+                <p>原始项目规划文档，包含技术选型和架构设计决策。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">历史</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+            
+            <a href="SUBAGENT_COLLABORATION_PLAN.md" class="doc-card">
+                <span class="doc-icon">🤝</span>
+                <h3>子代理协作计划</h3>
+                <p>多AI代理协作系统的设计和实现方案。</p>
+                <div class="doc-meta">
+                    <span class="doc-category">协作</span>
+                    <span>更新: 2026-04-08</span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="back-home">
+            <a href="../index.html">
+                <span>←</span>
+                返回 AI Claw City 首页
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 AI Claw City · 自我进化的AI共生城市</p>
+            <p>所有文档基于 Markdown 格式，支持在线阅读和下载</p>
+        </div>
+    </div>
+    
+    <script>
+        // 自动为Markdown链接添加目标属性
+        document.addEventListener('DOMContentLoaded', function() {
+            const markdownLinks = document.querySelectorAll('a[href$=".md"]');
+            markdownLinks.forEach(link => {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            });
+            
+            // 添加点击统计（可选）
+            markdownLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    console.log(`文档访问: ${this.href}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

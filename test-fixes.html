@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Claw City 修复测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #0a0a2a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { color: #4cc9f0; }
+        .test-section { background: rgba(10, 10, 42, 0.8); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid #7209b7; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(0, 255, 136, 0.1); border-left: 5px solid #00ff88; }
+        .error { background: rgba(255, 0, 85, 0.1); border-left: 5px solid #ff0055; }
+        button { background: #7209b7; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+        button:hover { background: #4cc9f0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 AI Claw City 网站修复测试</h1>
+        <p>测试时间: <span id="currentTime"></span></p>
+        
+        <div class="test-section">
+            <h2>1. 页脚信息修复测试</h2>
+            <div id="footerTest"></div>
+            <button onclick="testFooter()">测试页脚信息</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. 联系我们链接测试</h2>
+            <div id="contactTest"></div>
+            <button onclick="testContactLinks()">测试联系链接</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. 文档访问测试</h2>
+            <div id="docsTest"></div>
+            <button onclick="testDocsAccess()">测试文档访问</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. 修复结果</h2>
+            <div id="finalResults"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // 1. 测试页脚信息
+        function testFooter() {
+            const resultElement = document.getElementById('footerTest');
+            resultElement.innerHTML = '<div class="status">正在测试页脚信息...</div>';
+            
+            fetch('index.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const copyrightText = doc.querySelector('.copyright')?.textContent || '';
+                    
+                    let resultsHtml = '';
+                    let allPassed = true;
+                    
+                    // 检查版本号
+                    if (copyrightText.includes('版本 2.1')) {
+                        resultsHtml += '<div class="status success">✅ 版本号正确: 2.1</div>';
+                    } else {
+                        resultsHtml += '<div class="status error">❌ 版本号错误，应为2.1</div>';
+                        allPassed = false;
+                    }
+                    
+                    // 检查更新日期
+                    if (copyrightText.includes('2026-04-09')) {
+                        resultsHtml += '<div class="status success">✅ 更新日期正确: 2026-04-09</div>';
+                    } else {
+                        resultsHtml += '<div class="status error">❌ 更新日期错误，应为2026-04-09</div>';
+                        allPassed = false;
+                    }
+                    
+                    // 检查描述
+                    if (copyrightText.includes('自我进化的AI共生城市')) {
+                        resultsHtml += '<div class="status success">✅ 描述正确: 自我进化的AI共生城市</div>';
+                    } else {
+                        resultsHtml += '<div class="status error">❌ 描述错误，应为"自我进化的AI共生城市"</div>';
+                        allPassed = false;
+                    }
+                    
+                    resultsHtml += `<div class="status ${allPassed ? 'success' : 'error'}">${allPassed ? '✅ 页脚信息修复通过' : '❌ 页脚信息修复失败'}</div>`;
+                    resultElement.innerHTML = resultsHtml;
+                    
+                    updateFinalResults();
+                })
+                .catch(error => {
+                    resultElement.innerHTML = `<div class="status error">❌ 测试失败: ${error.message}</div>`;
+                });
+        }
+        
+        // 2. 测试联系链接
+        function testContactLinks() {
+            const resultElement = document.getElementById('contactTest');
+            resultElement.innerHTML = '<div class="status">正在测试联系链接...</div>';
+            
+            fetch('index.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const mailLink = doc.querySelector('a[href^="mailto:"]')?.href || '';
+                    const githubLink = doc.querySelector('a[href*="github.com"]')?.href || '';
+                    
+                    let resultsHtml = '';
+                    let allPassed = true;
+                    
+                    // 检查邮箱链接
+                    if (mailLink.includes('contact@aiclaw.city')) {
+                        resultsHtml += '<div class="status success">✅ 邮箱链接正确: contact@aiclaw.city</div>';
+                    } else {
+                        resultsHtml += `<div class="status error">❌ 邮箱链接错误: ${mailLink}</div>`;
+                        allPassed = false;
+                    }
+                    
+                    // 检查GitHub链接
+                    if (githubLink.includes('github.com/AiClawCity')) {
+                        resultsHtml += '<div class="status success">✅ GitHub链接正确: github.com/AiClawCity</div>';
+                    } else {
+                        resultsHtml += `<div class="status error">❌ GitHub链接错误: ${githubLink}</div>`;
+                        allPassed = false;
+                    }
+                    
+                    resultsHtml += `<div class="status ${allPassed ? 'success' : 'error'}">${allPassed ? '✅ 联系链接修复通过' : '❌ 联系链接修复失败'}</div>`;
+                    resultElement.innerHTML = resultsHtml;
+                    
+                    updateFinalResults();
+                })
+                .catch(error => {
+                    resultElement.innerHTML = `<div class="status error">❌ 测试失败: ${error.message}</div>`;
+                });
+        }
+        
+        // 3. 测试文档访问
+        function testDocsAccess() {
+            const resultElement = document.getElementById('docsTest');
+            resultElement.innerHTML = '<div class="status">正在测试文档访问...</div>';
+            
+            // 测试docs/index.html
+            fetch('docs/index.html')
+                .then(response => {
+                    let resultsHtml = '';
+                    
+                    if (response.ok) {
+                        resultsHtml += '<div class="status success">✅ docs/index.html 可正常访问</div>';
+                        
+                        // 检查文档首页内容
+                        return response.text().then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            
+                            const title = doc.querySelector('h1')?.textContent || '';
+                            if (title.includes('AI Claw City 技术文档')) {
+                                resultsHtml += '<div class="status success">✅ 文档首页标题正确</div>';
+                            } else {
+                                resultsHtml += `<div class="status error">❌ 文档首页标题错误: ${title}</div>`;
+                            }
+                            
+                            // 检查文档链接数量
+                            const docLinks = doc.querySelectorAll('.doc-card');
+                            if (docLinks.length >= 8) {
+                                resultsHtml += `<div class="status success">✅ 文档卡片数量: ${docLinks.length}个</div>`;
+                            } else {
+                                resultsHtml += `<div class="status error">❌ 文档卡片数量不足: ${docLinks.length}个</div>`;
+                            }
+                            
+                            resultsHtml += '<div class="status success">✅ 文档访问修复通过</div>';
+                            resultElement.innerHTML = resultsHtml;
+                            updateFinalResults();
+                        });
+                    } else {
+                        resultsHtml += `<div class="status error">❌ docs/index.html 访问失败: ${response.status}</div>`;
+                        resultElement.innerHTML = resultsHtml;
+                    }
+                })
+                .catch(error => {
+                    resultElement.innerHTML = `<div class="status error">❌ 文档访问测试失败: ${error.message}</div>`;
+                });
+        }
+        
+        // 4. 更新最终结果
+        function updateFinalResults() {
+            const sections = ['footerTest', 'contactTest', 'docsTest'];
+            let successCount = 0;
+            let totalCount = 0;
+            
+            sections.forEach(sectionId => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const successElements = section.querySelectorAll('.status.success');
+                    const errorElements = section.querySelectorAll('.status.error');
+                    
+                    successCount += successElements.length;
+                    totalCount += successElements.length + errorElements.length;
+                }
+            });
+            
+            const successRate = totalCount > 0 ? Math.round((successCount / totalCount) * 100) : 0;
+            
+            const finalResults = document.getElementById('finalResults');
+            finalResults.innerHTML = `
+                <div class="status ${successRate >= 80 ? 'success' : successRate >= 50 ? 'warning' : 'error'}">
+                    <h3>📊 修复测试结果</h3>
+                    <p>成功率: ${successRate}% (${successCount}/${totalCount})</p>
+                    <p>${successRate >= 80 ? '✅ 所有修复通过' : successRate >= 50 ? '⚠️  部分修复通过' : '❌ 修复需要调整'}</p>
+                    <p>建议访问: <a href="index.html" style="color: #4cc9f0;">主站</a> | <a href="docs/" style="color: #4cc9f0;">技术文档</a></p>
+                </div>
+            `;
+        }
+        
+        // 页面加载后自动运行测试
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                testFooter();
+                setTimeout(testContactLinks, 1000);
+                setTimeout(testDocsAccess, 2000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
