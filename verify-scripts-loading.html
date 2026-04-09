@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Claw City 脚本加载验证</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #0a0a2a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { color: #4cc9f0; }
+        .test-section { background: rgba(10, 10, 42, 0.8); padding: 20px; margin: 20px 0; border-radius: 10px; border: 1px solid #7209b7; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: rgba(0, 255, 136, 0.1); border-left: 5px solid #00ff88; }
+        .error { background: rgba(255, 0, 85, 0.1); border-left: 5px solid #ff0055; }
+        .loading { background: rgba(255, 183, 3, 0.1); border-left: 5px solid #ffb703; }
+        button { background: #7209b7; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px 0; }
+        button:hover { background: #4cc9f0; }
+        .log { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9rem; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 AI Claw City 脚本加载验证</h1>
+        <p>验证时间: <span id="currentTime"></span></p>
+        
+        <div class="test-section">
+            <h2>1. 📁 文件存在性检查</h2>
+            <div id="fileCheckResults"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. 🚀 脚本加载测试</h2>
+            <button onclick="loadScripts()">开始加载测试</button>
+            <div id="scriptLoadResults"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. 🏙️ 系统初始化测试</h2>
+            <button onclick="initializeSystems()">初始化系统</button>
+            <div id="systemInitResults"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. 📊 控制台日志</h2>
+            <div id="consoleLog" class="log">等待测试开始...</div>
+        </div>
+        
+        <div class="test-section">
+            <h2>5. ✅ 验证结果</h2>
+            <div id="finalResults"></div>
+        </div>
+    </div>
+    
+    <!-- 测试用脚本引用 -->
+    <script src="scripts/rule-checker.js"></script>
+    <script src="scripts/city-evolution.js"></script>
+    <script src="scripts/evolution-with-rules.js"></script>
+    
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // 控制台日志捕获
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logEntries = [];
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logEntries.push({ type: 'log', args: args, time: new Date() });
+            updateConsoleLog();
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logEntries.push({ type: 'error', args: args, time: new Date() });
+            updateConsoleLog();
+        };
+        
+        function updateConsoleLog() {
+            const logElement = document.getElementById('consoleLog');
+            let logHtml = '';
+            
+            for (const entry of logEntries.slice(-20)) { // 显示最近20条
+                const time = entry.time.toLocaleTimeString();
+                const message = entry.args.join(' ');
+                const typeClass = entry.type === 'error' ? 'error' : 'log';
+                logHtml += `<div class="${typeClass}">[${time}] ${message}</div>`;
+            }
+            
+            logElement.innerHTML = logHtml;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // 1. 文件存在性检查
+        function checkFiles() {
+            const files = [
+                'scripts/rule-checker.js',
+                'scripts/city-evolution.js',
+                'scripts/evolution-with-rules.js',
+                'config.json',
+                'logs/evolution_status.json'
+            ];
+            
+            let resultsHtml = '';
+            let allExist = true;
+            
+            files.forEach(file => {
+                fetch(file, { method: 'HEAD' })
+                    .then(response => {
+                        const exists = response.ok;
+                        resultsHtml += `
+                            <div class="status ${exists ? 'success' : 'error'}">
+                                ${exists ? '✅' : '❌'} ${file} - ${exists ? '存在' : '不存在'}
+                            </div>
+                        `;
+                        
+                        if (!exists) allExist = false;
+                        
+                        document.getElementById('fileCheckResults').innerHTML = resultsHtml;
+                    })
+                    .catch(() => {
+                        resultsHtml += `
+                            <div class="status error">
+                                ❌ ${file} - 检查失败
+                            </div>
+                        `;
+                        allExist = false;
+                        document.getElementById('fileCheckResults').innerHTML = resultsHtml;
+                    });
+            });
+            
+            setTimeout(() => {
+                resultsHtml += `
+                    <div class="status ${allExist ? 'success' : 'error'}" style="margin-top: 10px;">
+                        ${allExist ? '✅ 所有文件检查通过' : '❌ 部分文件缺失'}
+                    </div>
+                `;
+                document.getElementById('fileCheckResults').innerHTML = resultsHtml;
+            }, 1000);
+        }
+        
+        // 2. 脚本加载测试
+        function loadScripts() {
+            const resultsElement = document.getElementById('scriptLoadResults');
+            resultsElement.innerHTML = '<div class="status loading">正在加载脚本...</div>';
+            
+            let resultsHtml = '';
+            let allLoaded = true;
+            
+            // 检查RuleChecker
+            if (typeof RuleChecker !== 'undefined') {
+                resultsHtml += `<div class="status success">✅ RuleChecker 类已定义</div>`;
+                
+                // 测试实例化
+                try {
+                    const checker = new RuleChecker();
+                    const summary = checker.getRulesSummary();
+                    resultsHtml += `<div class="status success">✅ RuleChecker 实例化成功</div>`;
+                    resultsHtml += `<div class="status success">📊 规则系统: ${summary.supremePrinciples}条最高原则, ${summary.codexArticles}条法典</div>`;
+                } catch (error) {
+                    resultsHtml += `<div class="status error">❌ RuleChecker 实例化失败: ${error.message}</div>`;
+                    allLoaded = false;
+                }
+            } else {
+                resultsHtml += `<div class="status error">❌ RuleChecker 未定义</div>`;
+                allLoaded = false;
+            }
+            
+            // 检查CityEvolutionManager
+            if (typeof CityEvolutionManager !== 'undefined') {
+                resultsHtml += `<div class="status success">✅ CityEvolutionManager 类已定义</div>`;
+            } else {
+                resultsHtml += `<div class="status error">❌ CityEvolutionManager 未定义</div>`;
+                allLoaded = false;
+            }
+            
+            // 检查RuleIntegratedEvolution
+            if (typeof RuleIntegratedEvolution !== 'undefined') {
+                resultsHtml += `<div class="status success">✅ RuleIntegratedEvolution 类已定义</div>`;
+            } else {
+                resultsHtml += `<div class="status warning">⚠️ RuleIntegratedEvolution 未定义 (可选)</div>`;
+            }
+            
+            resultsHtml += `<div class="status ${allLoaded ? 'success' : 'error'}" style="margin-top: 10px;">
+                ${allLoaded ? '✅ 脚本加载测试通过' : '❌ 脚本加载测试失败'}
+            </div>`;
+            
+            resultsElement.innerHTML = resultsHtml;
+        }
+        
+        // 3. 系统初始化测试
+        function initializeSystems() {
+            const resultsElement = document.getElementById('systemInitResults');
+            resultsElement.innerHTML = '<div class="status loading">正在初始化系统...</div>';
+            
+            let resultsHtml = '';
+            
+            // 测试规则检查器
+            if (typeof RuleChecker !== 'undefined') {
+                try {
+                    const ruleChecker = new RuleChecker();
+                    
+                    // 测试功能检查
+                    const testFeature = {
+                        name: '测试功能',
+                        description: '这是一个测试功能，用于验证规则检查系统。',
+                        area: 'infrastructure'
+                    };
+                    
+                    const complianceResult = ruleChecker.checkFeatureCompliance(testFeature);
+                    resultsHtml += `<div class="status success">✅ 规则检查器工作正常</div>`;
+                    resultsHtml += `<div class="status success">📋 测试功能检查: ${complianceResult.passed ? '通过' : '未通过'}</div>`;
+                    
+                    // 测试进化验证
+                    const validationResult = ruleChecker.validateFeatureForEvolution(testFeature);
+                    resultsHtml += `<div class="status success">🔍 进化验证: ${validationResult.allowed ? '允许' : '阻止'}</div>`;
+                    
+                } catch (error) {
+                    resultsHtml += `<div class="status error">❌ 规则检查器测试失败: ${error.message}</div>`;
+                }
+            }
+            
+            // 测试进化系统
+            if (typeof CityEvolutionManager !== 'undefined') {
+                try {
+                    const evolutionManager = new CityEvolutionManager();
+                    const status = evolutionManager.getSystemStatus();
+                    resultsHtml += `<div class="status success">✅ 进化系统工作正常</div>`;
+                    resultsHtml += `<div class="status success">🏙️ 城市等级: ${status.cityLevel || 'N/A'}</div>`;
+                    resultsHtml += `<div class="status success">😊 居民满意度: ${status.residentSatisfaction || 'N/A'}%</div>`;
+                } catch (error) {
+                    resultsHtml += `<div class="status error">❌ 进化系统测试失败: ${error.message}</div>`;
+                }
+            }
+            
+            resultsElement.innerHTML = resultsHtml;
+            
+            // 更新最终结果
+            updateFinalResults();
+        }
+        
+        // 5. 更新最终结果
+        function updateFinalResults() {
+            const finalResults = document.getElementById('finalResults');
+            
+            let successCount = 0;
+            let totalCount = 0;
+            
+            // 统计成功状态
+            const statusElements = document.querySelectorAll('.status');
+            statusElements.forEach(element => {
+                if (element.classList.contains('success')) successCount++;
+                totalCount++;
+            });
+            
+            const successRate = totalCount > 0 ? Math.round((successCount / totalCount) * 100) : 0;
+            
+            finalResults.innerHTML = `
+                <div class="status ${successRate >= 80 ? 'success' : successRate >= 50 ? 'warning' : 'error'}">
+                    <h3>📊 总体验证结果</h3>
+                    <p>成功率: ${successRate}% (${successCount}/${totalCount})</p>
+                    <p>${successRate >= 80 ? '✅ 系统准备就绪' : successRate >= 50 ? '⚠️  系统基本可用' : '❌ 系统需要修复'}</p>
+                    <p>建议: ${successRate >= 80 ? '可以正常使用' : '请检查错误并修复'}</p>
+                </div>
+            `;
+        }
+        
+        // 页面加载完成后开始检查
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 AI Claw City 脚本加载验证开始');
+            checkFiles();
+            
+            // 自动开始脚本加载测试
+            setTimeout(loadScripts, 1500);
+            
+            // 自动开始系统初始化测试
+            setTimeout(initializeSystems, 3000);
+        });
+    </script>
+</body>
+</html>
